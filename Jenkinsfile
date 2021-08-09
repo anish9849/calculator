@@ -24,9 +24,10 @@ pipeline {
             }
         }
    
-        stage('test') {
+        stage('Coverage Test') {
             steps {
-                echo "Hello Testing!"
+                sh "./gradlew jacocoTestReport"
+                sh "./gradlew jacocoTestCoverageVerification"
             }
         }
    
