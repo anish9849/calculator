@@ -12,6 +12,12 @@ pipeline {
             }
         }
         
+        stage("Clean") {
+            steps {
+                sh "./gradlew clean build"
+            }
+        }
+       
         stage("Compile") {
             steps {
                 sh "./gradlew compileJava"
