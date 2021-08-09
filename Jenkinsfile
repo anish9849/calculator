@@ -12,6 +12,12 @@ pipeline {
             }
         }
         
+        stage("Clean") {
+            steps {
+                sh "./gradlew clean build"
+            }
+        }
+       
         stage("Compile") {
             steps {
                 sh "./gradlew compileJava"
@@ -26,8 +32,8 @@ pipeline {
    
         stage('Coverage Coverage Test') {
             steps {
-                sh "./gradlew jacocoTestCoverageVerification"
-                sh "./gradlew jacocoTestReport"
+                sh "./gradlew test --info jacocoTestCoverageVerification"
+                sh "./gradlew test --info jacocoTestReport"
             }
         }
    
