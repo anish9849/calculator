@@ -27,7 +27,8 @@ pipeline {
         stage('Coverage Test') {
             when { expression { return params.GENERATE_REPORT } }
             steps {
-                sh "./gradlew --info jacocoTestReport"
+                sh "./gradlew test jacocoTestCoverageVerification"
+                sh "./gradlew test jacocoTestReport"
                 publishHTML (target: [
                     reportDir: 'build/reports/jacoco/test/html',
                     reportFiles: 'index.html',
