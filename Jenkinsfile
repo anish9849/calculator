@@ -1,6 +1,8 @@
 pipeline {
     agent { label 'agent1' }
-    pollSCM('* * * * *')
+    triggers {
+        pollSCM('* * * * *')
+    }
     parameters {
         booleanParam(name: 'GENERATE_REPORT', defaultValue: false,
         description: 'Is it the debug build?')
