@@ -27,7 +27,7 @@ pipeline {
         stage('Coverage Test') {
             when { expression { return params.GENERATE_REPORT } }
             steps {
-                sh "./gradlew --info test"
+                sh "./gradlew --info jacocoTestReport"
             }
         }
         
