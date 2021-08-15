@@ -1,7 +1,7 @@
 pipeline {
     agent { label 'agent1' }
     parameters {
-        booleanParam(name: 'DEBUG_BUILD', defaultValue: false,
+        booleanParam(name: 'GENERATE_REPORT', defaultValue: false,
         description: 'Is it the debug build?')
     }
     stages {
@@ -12,12 +12,6 @@ pipeline {
             }
         }
         
-        stage("Clean") {
-            steps {
-                sh "./gradlew clean build"
-            }
-        }
-       
         stage("Compile") {
             steps {
                 sh "./gradlew compileJava"
@@ -29,33 +23,27 @@ pipeline {
                 sh "./gradlew --info test"
             }
         }
-   
-        stage('Coverage Coverage Test') {
+        
+        stage('Coverage Test') {
+            when { expression { return params.GENERATE_REPORT } }
             steps {
-                sh "./gradlew test --info jacocoTestCoverageVerification"
-                sh "./gradlew test --info jacocoTestReport"
-            }
-        }
-   
-        stage('deploy') {
-            steps {
-                echo "Hello Deploy!"
+                sh "./gradlew --info test"
             }
         }
         
-        stage('Example') {
-            environment { NAME = 'ANISH' }
-            when { expression { return params.DEBUG_BUILD } }
-                steps {
-                    echo "Hello from $NAME"
-                    script {
-                    def browsers = ['chrome', 'firefox']
-                    for (int i = 0; i < browsers.size(); ++i) {
-                    echo "Testing the ${browsers[i]} browser."
-                    }
-                }
-            }
-        }
+        // stage('Example') {
+        //     environment { NAME = 'ANISH' }
+        //     when { expression { return params.DEBUG_BUILD } }
+        //         steps {
+        //             echo "Hello from $NAME"
+        //             script {
+        //             def browsers = ['chrome', 'firefox']
+        //             for (int i = 0; i < browsers.size(); ++i) {
+        //             echo "Testing the ${browsers[i]} browser."
+        //             }
+        //         }
+        //     }
+        // }
     }
     post { always { echo 'I will always say Hello again!' } }
 }
